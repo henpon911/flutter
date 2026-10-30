@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class PageDashboard extends StatelessWidget {
@@ -6,44 +7,55 @@ class PageDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.amberAccent,
+
+      appBar: AppBar(
+        title: const Text('Dashboard'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+
       body: Center(
-        child: Container(
-          margin: const EdgeInsets.all(50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('dashboard'),
-
-              const SizedBox(height: 20),
-
-              Wrap(
-                alignment: WrapAlignment.center,
-                spacing: 10,
-                runSpacing: 10,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('lihat data'),
-                  ),
-
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('update data'),
-                  ),
-
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('tambah data'),
-                  ),
-
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('hapus data'),
-                  ),
-                ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Selamat Datang di Dashboard',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 30),
+
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Lihat Data'),
+            ),
+
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Tambah Data'),
+            ),
+
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Update Data'),
+            ),
+
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Hapus Data'),
+            ),
+          ],
         ),
       ),
     );

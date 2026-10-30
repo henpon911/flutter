@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,12 +12,12 @@ class PageLogin extends StatefulWidget {
 }
 
 class _PageLoginState extends State<PageLogin> {
-    final TextEditingController TxUsername = TextEditingController();
-    final TextEditingController TxPassword = TextEditingController();
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
 
     bool loading = false;
 
-    Future<void> prosesLogin() async {
+    Future<void> login() async {
         setState(() {
             loading = true;
         });
@@ -28,8 +29,8 @@ class _PageLoginState extends State<PageLogin> {
                     'Content-Type': 'application/json',
                 },
                 body: jsonEncode({
-                    'username': TxUsername.text,
-                    'password': TxPassword.text,
+                    'username': usernameController.text,
+                    'password': passwordController.text,
                 }),
             );
 
@@ -38,11 +39,7 @@ class _PageLoginState extends State<PageLogin> {
             if (!mounted) return;
 
             if (response.statusCode == 200 && data['status'] == true) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(data['message'] ?? 'Login berhasil')),
-                );
-
-                Navigator.pushReplacement(
+                Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const PageDashboard(),
@@ -59,21 +56,23 @@ class _PageLoginState extends State<PageLogin> {
             if (!mounted) return;
 
             ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Gagal menghubungi API: $e')),
+                const SnackBar(
+                    content: Text('Gagal menghubungi API'),
+                ),
             );
-        } finally {
-            if (mounted) {
-                setState(() {
-                    loading = false;
-                });
-            }
+        }
+
+        if (mounted) {
+            setState(() {
+                loading = false;
+            });
         }
     }
 
     @override
     void dispose() {
-        TxUsername.dispose();
-        TxPassword.dispose();
+        usernameController.dispose();
+        passwordController.dispose();
         super.dispose();
     }
 
@@ -81,27 +80,35 @@ class _PageLoginState extends State<PageLogin> {
     Widget build(BuildContext context) {
         return Scaffold(
             backgroundColor: Colors.lightBlue,
+
             body: Center(
                 child: SingleChildScrollView(
                     padding: const EdgeInsets.all(30),
+
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                             const Icon(
                                 Icons.supervised_user_circle,
                                 size: 80,
+                                color: Colors.white,
                             ),
-                            const SizedBox(height: 15),
+
+                            const SizedBox(height: 20),
+
                             const Text(
-                                'Login',
+                                'LOGIN',
                                 style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.white,
                                 ),
                             ),
-                            const SizedBox(height: 25),
+
+                            const SizedBox(height: 30),
+
                             TextField(
-                                controller: TxUsername,
+                                controller: usernameController,
                                 decoration: const InputDecoration(
                                     labelText: 'Input Username',
                                     border: OutlineInputBorder(),
@@ -109,9 +116,11 @@ class _PageLoginState extends State<PageLogin> {
                                     fillColor: Colors.white,
                                 ),
                             ),
-                            const SizedBox(height: 15),
+
+                            const SizedBox(height: 20),
+
                             TextField(
-                                controller: TxPassword,
+                                controller: passwordController,
                                 obscureText: true,
                                 decoration: const InputDecoration(
                                     labelText: 'Input Password',
@@ -120,12 +129,16 @@ class _PageLoginState extends State<PageLogin> {
                                     fillColor: Colors.white,
                                 ),
                             ),
-                            const SizedBox(height: 25),
+
+                            const SizedBox(height: 30),
+
                             SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
-                                    onPressed: loading ? null : prosesLogin,
-                                    child: Text(loading ? 'Memproses...' : 'Login'),
+                                    onPressed: loading ? null : login,
+                                    child: loading
+                                        ? const CircularProgressIndicator()
+                                        : const Text('LOGIN'),
                                 ),
                             ),
                         ],

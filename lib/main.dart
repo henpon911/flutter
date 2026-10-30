@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:untitled/pages/page_input.dart';
+import 'package:untitled/pages/page_dashboard.dart';
 import 'package:untitled/pages/page_login.dart';
 import 'app_bar.dart';
 import 'app_kolom.dart';
